@@ -1,6 +1,7 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Extensions.OpenAI.Assistants;
 using Microsoft.Extensions.Logging;
+using System.Numerics.Tensors;
 
 namespace AssistantSample;
 
@@ -16,21 +17,48 @@ public class AssistantSkills
         this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    [Function(nameof(GetWeather))]
-    public String GetWeather(
+
+    [Function(nameof(GetCosh))]
+    public String GetCosh(
         [AssistantSkillTrigger(
-            "Get the weather in location",
+            "Calculate the Cosh of x",
             Model = "%CHAT_MODEL_DEPLOYMENT_NAME%"
         )]
-            string location
+            string x
     )
     {
         // Log the location for which the weather is being requested
-        this.logger.LogInformation("Getting weather for location: {0}", location);
+        this.logger.LogInformation("Calculating the Cosh of: {0}", x);
 
-        // Return a mock weather response for the given location
-        return $"The current weather in {location} is 72 degrees and sunny.";
+        float xValue = float.Parse(x);
+
+        // Create an array of floats
+        float[] inputArray = { xValue };
+
+        // Create ReadOnlySpan from the input array
+        ReadOnlySpan<float> inputSpan = new ReadOnlySpan<float>(inputArray);
+
+        // Create an output array to store results
+        float[] outputArray = new float[inputArray.Length];
+
+        // Create Span from the output array
+        Span<float> outputSpan = new Span<float>(outputArray);
+
+        // Calculate hyperbolic cosines
+        TensorPrimitives.Cosh(inputSpan, outputSpan);
+
+        // Get results
+
+        string resultCosh = "Hyperbolic Cosines: ";
+        foreach (var value in outputArray)
+        {
+            resultCosh += value.ToString() + " ";
+        }
+
+        // return the calulated hyperbolic cosines
+        return resultCosh;
     }
+
 
     [Function(nameof(GetTime))]
     public String GetTime(
@@ -55,5 +83,21 @@ public class AssistantSkills
 
         // Return the local time as a string in short time format
         return localTime.ToString("t");
+    }
+
+    [Function(nameof(GetWeather))]
+    public String GetWeather(
+    [AssistantSkillTrigger(
+            "Get the weather in location",
+            Model = "%CHAT_MODEL_DEPLOYMENT_NAME%"
+        )]
+            string location
+)
+    {
+        // Log the location for which the weather is being requested
+        this.logger.LogInformation("Getting weather for location: {0}", location);
+
+        // Return a mock weather response for the given location
+        return $"The current weather in {location} is 72 degrees and sunny.";
     }
 }

@@ -10,22 +10,30 @@
 @host=http://localhost:7071
 
 ### Create a new chat
-PUT {{host}}/api/assistants/1
+PUT {{host}}/api/assistants/2
 
 
 ### Ask what time it is in a place to trigger GetTime function
-POST  {{host}}/api/assistants/1
+POST  {{host}}/api/assistants/2
 Content-Type: application/json
 
 {
-    "message": "What time is it in Tacoma?"
+    "message": "What time is it in NYC?"
 }
 
 
-### Ask what the weather is in a place to trigger GetWeather function
-POST  {{host}}/api/assistants/1
+### Ask an iteration of chat questions to establish context
+POST  {{host}}/api/assistants/2
 Content-Type: application/json
 
 {
-    "message": "What is the weather in Tacoma?"
+    "message": "Consider this sequence of float numbers, 1.0, 2.0"
+}
+
+### Ask to Calculate the Cosh of a number
+POST  {{host}}/api/assistants/2
+Content-Type: application/json
+
+{
+    "message": "Calculate the Cosh of the floats from prior iterations?"
 }
