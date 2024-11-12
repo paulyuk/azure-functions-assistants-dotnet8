@@ -21,7 +21,7 @@ public class AssistantSkills
     [Function(nameof(GetCosh))]
     public String GetCosh(
         [AssistantSkillTrigger(
-            "Calculate the Cosh of vector [x]",
+            "Calculate the Cosh of x",
             Model = "%CHAT_MODEL_DEPLOYMENT_NAME%"
         )]
             string x
@@ -49,12 +49,14 @@ public class AssistantSkills
 
         // Get results
 
-        string resultCosh = "Hyperbolic Cosines: ";
+        string resultCosh = "";
         foreach (var value in outputArray)
         {
-            resultCosh += value.ToString() + " ";
+            resultCosh += value.ToString() + ",";
         }
+        resultCosh = resultCosh.TrimEnd(',');
 
+        this.logger.LogInformation("Calculated Hyperbolic Cosines: [{0}]", resultCosh);
         // return the calulated hyperbolic cosines
         return resultCosh;
     }

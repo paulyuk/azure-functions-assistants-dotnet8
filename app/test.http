@@ -27,7 +27,7 @@ POST  {{host}}/api/assistants/1
 Content-Type: application/json
 
 {
-    "message": "tell me a numerical representation of random vector with at least 25 Float components"
+    "message": "tell me a numerical representation of random vector with at least 20 Float components"
 }
 
 ### Ask to Calculate the Cosh of a number
