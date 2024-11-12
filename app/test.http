@@ -10,11 +10,11 @@
 @host=http://localhost:7071
 
 ### Create a new chat
-PUT {{host}}/api/assistants/2
+PUT {{host}}/api/assistants/1
 
 
 ### Ask what time it is in a place to trigger GetTime function
-POST  {{host}}/api/assistants/2
+POST  {{host}}/api/assistants/1
 Content-Type: application/json
 
 {
@@ -23,17 +23,17 @@ Content-Type: application/json
 
 
 ### Ask an iteration of chat questions to establish context
-POST  {{host}}/api/assistants/2
+POST  {{host}}/api/assistants/1
 Content-Type: application/json
 
 {
-    "message": "Consider this sequence of float numbers, 1.0, 2.0"
+    "message": "tell me a numerical representation of random vector with at least 25 Float components"
 }
 
 ### Ask to Calculate the Cosh of a number
-POST  {{host}}/api/assistants/2
+POST  {{host}}/api/assistants/1
 Content-Type: application/json
 
 {
-    "message": "Calculate the Cosh of the floats from prior iterations?"
+    "message": "Calculate the Cosh of the last random vector"
 }

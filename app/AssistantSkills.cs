@@ -21,19 +21,19 @@ public class AssistantSkills
     [Function(nameof(GetCosh))]
     public String GetCosh(
         [AssistantSkillTrigger(
-            "Calculate the Cosh of x",
+            "Calculate the Cosh of vector [x]",
             Model = "%CHAT_MODEL_DEPLOYMENT_NAME%"
         )]
             string x
     )
     {
-        // Log the location for which the weather is being requested
-        this.logger.LogInformation("Calculating the Cosh of: {0}", x);
 
-        float xValue = float.Parse(x);
+        this.logger.LogInformation("Calculating the Cosh of: [{0}]", x);
+
+        var xValue = x.Trim([ '[', ']']).Split(',').Select(f => float.Parse(f));
 
         // Create an array of floats
-        float[] inputArray = { xValue };
+        float[] inputArray = xValue.ToArray();
 
         // Create ReadOnlySpan from the input array
         ReadOnlySpan<float> inputSpan = new ReadOnlySpan<float>(inputArray);
